@@ -1,12 +1,17 @@
 import React from "react";
+import { useAction } from "@reatom/react";
 import { Wrapper } from "./styled";
-import { LinkButton, Button } from "../../components/common/buttons";
+import { LinkButton, Button } from "../common/buttons";
+import { deleteProduct } from "../../atoms";
 
 const Product: React.FC<{
   id: number;
   title: string;
   price: string;
 }> = ({ id, title, price }) => {
+  //@ts-ignore
+  const remove = useAction((val) => deleteProduct(val));
+
   return (
     <Wrapper>
       <div>
@@ -19,7 +24,9 @@ const Product: React.FC<{
       </div>
       <div className="product__buttons">
         <LinkButton to={`/products/${id}`}>Редактировать</LinkButton>
-        <Button alert>Удалить</Button>
+        <Button onClick={() => remove(id)} alert>
+          Удалить
+        </Button>
       </div>
     </Wrapper>
   );

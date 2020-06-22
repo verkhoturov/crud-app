@@ -2,27 +2,26 @@ import React from "react";
 import { Section, Row } from "../../components/common/grid";
 import { LinkButton } from "../../components/common/buttons";
 import { Title } from "../../components/common/texts";
-import Product from "../../components/product";
+import RowProduct from "../../components/row-product";
 import { useAtom, useAction } from "@reatom/react";
-import { allProducts } from "../../atoms";
-import { getAllProducts } from "../../actions";
+import { products, readProducts } from "../../atoms";
 import { IProduct } from "../../types";
-
 import ProductsDataService from "../../services/products";
 
 const ProductsTable: React.FC = () => {
-  const data: IProduct[] = useAtom(allProducts);
+  const data = useAtom(products);
   //@ts-ignore
-  const getData = useAction((val) => getAllProducts(val));
+  const getData = useAction((val) => readProducts(val));
 
   React.useEffect(() => {
     ProductsDataService.getAll()
       .then((response) => {
-        //@ts-ignore
         getData(response.data);
       })
       .catch((e) => {
-        console.log(e);
+        alert(
+          "К сожалению, внезапно вылез Гейзенбаг :( К счастью, статистика благоволит вам, попробуйте повторить"
+        );
       });
   }, []);
 
@@ -38,11 +37,11 @@ const ProductsTable: React.FC = () => {
       </Row>
       <Row>
         {data.length > 0 &&
-          data.map((product, i) => {
+          data.map((product: IProduct, i) => {
             return (
-              <Product
+              <RowProduct
                 key={i}
-                id={i + 1}
+                id={product.id}
                 title={product.title}
                 price={product.price}
               />

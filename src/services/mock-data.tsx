@@ -1,4 +1,4 @@
-export const mockData = [
+export const defaultData = [
   {
     id: 1,
     title: "Galaxy M01",
